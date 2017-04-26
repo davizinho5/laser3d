@@ -1,6 +1,6 @@
 ROS Indigo version tested under Ubuntu 14.04 LTS
 
-This software is by two ros packages
+This software is compound by two ros packages
 - laser_msgs: contains the necessaty messages to communicate the information. 
 - motorised_hokuyo: contains ros nodes to use the system.
 
