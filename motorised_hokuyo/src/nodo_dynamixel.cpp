@@ -6,10 +6,10 @@
 #include <sstream>
 //#include <tinyxml.h>
 #include "ros/ros.h"
-#include "laser3D/srv_dynamixel.h"
-//#include "laser3D/srv_dynamixel_move.h"
-//#include "laser3D/srv_dynamixel_position.h"
-//#include "laser3D/srv_dynamixel_errors.h"
+#include "laser_msgs/srv_dynamixel.h"
+//#include "laser_msgs/srv_dynamixel_move.h"
+//#include "laser_msgs/srv_dynamixel_position.h"
+//#include "laser_msgs/srv_dynamixel_errors.h"
 //#include "std_msgs/Float32.h"
 
 using namespace std;
@@ -19,7 +19,7 @@ MotorDynamixel motor; //Global variable??
 
 
  //Service to move motor
- bool serverMove(laser3D::srv_dynamixel::Request  &req, laser3D::srv_dynamixel::Response &res)
+ bool serverMove(laser_msgs::srv_dynamixel::Request  &req, laser_msgs::srv_dynamixel::Response &res)
  {
 
    //ROS_INFO("Posicion selec: %f, Velocidad selec: %d", (float)req.position_i, (unsigned int)req.speed);
@@ -28,7 +28,7 @@ MotorDynamixel motor; //Global variable??
  }
 
  //Service to recive the position
- bool serverPosition(laser3D::srv_dynamixel::Request &req, laser3D::srv_dynamixel::Response &res)
+ bool serverPosition(laser_msgs::srv_dynamixel::Request &req, laser_msgs::srv_dynamixel::Response &res)
  {
    res.position_o=motor.getPosDeg();
 	//ROS_INFO("Posicion: %f", res.position_o);
@@ -37,7 +37,7 @@ MotorDynamixel motor; //Global variable??
  
 
  //service to recive the motor errors 
- bool serverErrors(laser3D::srv_dynamixel::Request &req, laser3D::srv_dynamixel::Response &res)
+ bool serverErrors(laser_msgs::srv_dynamixel::Request &req, laser_msgs::srv_dynamixel::Response &res)
  {
 
 //	ROS_INFO("Work errors: %u", motor.printWorkError());

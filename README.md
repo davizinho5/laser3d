@@ -1,1 +1,1 @@
-ROS Groovy version under Ubuntu 12.04 LTS
+ROS Indigo version under Ubuntu 14.04 LTS

@@ -1,5 +1,5 @@
 #include "ros/ros.h"
-#include "laser3D/srv_laser.h"
+#include "laser_msgs/srv_laser.h"
 #include <cstdlib>
 #include <sstream>
 #include <iostream>
@@ -27,9 +27,9 @@
 
    ros::NodeHandle n;
 	
-   ros::ServiceClient client1 = n.serviceClient<laser3D::srv_laser>("srv_laser");
+   ros::ServiceClient client1 = n.serviceClient<laser_msgs::srv_laser>("srv_laser");
 
-   laser3D::srv_laser srv1;
+   laser_msgs::srv_laser srv1;
 
 /*
 	//Parametros moviemiento motor

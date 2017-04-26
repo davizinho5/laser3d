@@ -1,5 +1,5 @@
 #include "ros/ros.h"
-#include "laser3D/srv_dynamixel.h"
+#include "laser_msgs/srv_dynamixel.h"
 #include <cstdlib>
  using namespace std;
 

@@ -1,24 +1,26 @@
-#include "ros/ros.h"
-#include "laser3D/srv_laser.h"
-#include "laser3D/srv_dynamixel.h"
-#include "laser3D/srv_hokuyo.h"
 #include <cstdlib>
-#include <sensor_msgs/LaserScan.h>
-#include <sensor_msgs/PointCloud2.h>
-//#include "pcl_ros/point_cloud.h"
-#include <pcl/point_types.h>
-#include <pcl/ros/conversions.h>
-
 #include <sstream>
 #include <stdio.h>
 #include <cmath>
 #include <vector>
 
-#define DEG2RAD M_PI/180.0
+#include "ros/ros.h"
+
+#include "laser_msgs/srv_laser.h"
+#include "laser_msgs/srv_dynamixel.h"
+#include "laser_msgs/srv_hokuyo.h"
+
+#include <sensor_msgs/LaserScan.h>
+#include <sensor_msgs/PointCloud2.h>
+
+#include <pcl_ros/point_cloud.h>
+#include <pcl/point_types.h>
+#include <pcl/ros/conversions.h>
+
+#define DEG2RAD_c M_PI/180.0
  
  using namespace std;
  
-// sensor_msgs::LaserScan scan;
  vector<float> lut_cos_a;
  vector<float> lut_sin_a;
 
@@ -28,29 +30,23 @@
  bool flag=0;
 
 
- bool serverLaser3D(laser3D::srv_laser::Request &req, laser3D::srv_laser::Response &res)
+ bool serverlaser_msgs(laser_msgs::srv_laser::Request &req, laser_msgs::srv_laser::Response &res)
  {
-
-/*		cout<<"Inicial= "<<req.initialPosition<<endl;
-		cout<<"Final= "<<req.finalPosition<<endl;
-		cout<<"Measure= "<<req.measureSpeed<<endl;
-		cout<<"Position= "<<req.positionSpeed<<endl;
-*/
 
 	ROS_INFO("SERVICIO LASER LANZADO");
 	ros::NodeHandle n;
-	ros::ServiceClient client_move = n.serviceClient<laser3D::srv_dynamixel>("srv_move");
-   ros::ServiceClient client_position = n.serviceClient<laser3D::srv_dynamixel>("srv_position");
-   ros::ServiceClient client_errors = n.serviceClient<laser3D::srv_dynamixel>("srv_errors");
-   ros::ServiceClient client_estado = n.serviceClient<laser3D::srv_hokuyo>("srv_hokuyo");
-   ros::ServiceClient client_parameter = n.serviceClient<laser3D::srv_hokuyo>("srv_parameter");
+	ros::ServiceClient client_move = n.serviceClient<laser_msgs::srv_dynamixel>("srv_move");
+   ros::ServiceClient client_position = n.serviceClient<laser_msgs::srv_dynamixel>("srv_position");
+   ros::ServiceClient client_errors = n.serviceClient<laser_msgs::srv_dynamixel>("srv_errors");
+   ros::ServiceClient client_estado = n.serviceClient<laser_msgs::srv_hokuyo>("srv_hokuyo");
+   ros::ServiceClient client_parameter = n.serviceClient<laser_msgs::srv_hokuyo>("srv_parameter");
 
 
-   laser3D::srv_dynamixel move;
-   laser3D::srv_dynamixel pos;
-   laser3D::srv_dynamixel errors;
-	laser3D::srv_hokuyo estado;
-	laser3D::srv_hokuyo parameter;
+   laser_msgs::srv_dynamixel move;
+   laser_msgs::srv_dynamixel pos;
+   laser_msgs::srv_dynamixel errors;
+	laser_msgs::srv_hokuyo estado;
+	laser_msgs::srv_hokuyo parameter;
 
 	//Variables motor
 	int positionSpeed;
@@ -182,8 +178,8 @@
 	int point=0;
 	for(int b=0; b<size_pos; ++b)
 		{
-			cos_b=cos(positions[b]*DEG2RAD);
-			sin_b=sin(positions[b]*DEG2RAD);
+			cos_b=cos(positions[b]*DEG2RAD_c);
+			sin_b=sin(positions[b]*DEG2RAD_c);
 			
 			for(int a=parameter.request.anguloMin; a<parameter.request.anguloMax; ++a)
 				{
@@ -225,14 +221,14 @@ void topicHokuyo(const sensor_msgs::LaserScan::ConstPtr& scan_hokuyo)
 
  int main(int argc, char **argv)
  {
-   ros::init(argc, argv, "laser3D");
+   ros::init(argc, argv, "laser_msgs");
 	ros::NodeHandle m;
 	ros::Subscriber sus_hokuyo = m.subscribe("topic_hokuyo", 1, topicHokuyo); 
-	ros::ServiceServer service1 = m.advertiseService("srv_laser", serverLaser3D);
+	ros::ServiceServer service1 = m.advertiseService("srv_laser", serverlaser_msgs);
  
-	float inicio=-45*DEG2RAD;
-	float final=225*DEG2RAD;
-	float incremento=0.25*DEG2RAD;
+	float inicio=-45*DEG2RAD_c;
+	float final=225*DEG2RAD_c;
+	float incremento=0.25*DEG2RAD_c;
 
 	//Generacion de tabla LUT con los valores de senos y cosenos de los angulos del laser
 	for(float a=inicio; a<=final; a+=incremento)

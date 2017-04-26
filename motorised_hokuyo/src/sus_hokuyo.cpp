@@ -1,6 +1,6 @@
 #include "ros/ros.h"
-#include "laser3D/srv_laser.h"
-#include "laser3D/srv_hokuyo.h"
+#include "laser_msgs/srv_laser.h"
+#include "laser_msgs/srv_hokuyo.h"
 #include <cstdlib>
 #include <sensor_msgs/LaserScan.h>
 

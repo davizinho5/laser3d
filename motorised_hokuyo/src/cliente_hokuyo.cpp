@@ -1,6 +1,6 @@
 #include "ros/ros.h"
-#include "laser3D/srv_laser.h"
-#include "laser3D/srv_hokuyo.h"
+#include "laser_msgs/srv_laser.h"
+#include "laser_msgs/srv_hokuyo.h"
 #include <cstdlib>
 #include <sensor_msgs/LaserScan.h>
 
@@ -31,12 +31,12 @@ void topicHokuyo(const sensor_msgs::LaserScan::ConstPtr& scan_hokuyo)
    ros::init(argc, argv, "cliente_hokuyo");
 	ros::NodeHandle m;
 	//ros::Subscriber sus_hokuyo = m.subscribe("topic_hokuyo", 1, topicHokuyo); 
-   ros::ServiceClient client_estado = m.serviceClient<laser3D::srv_hokuyo>("srv_hokuyo");
-   ros::ServiceClient client_parameter = m.serviceClient<laser3D::srv_hokuyo>("srv_parameter");
+   ros::ServiceClient client_estado = m.serviceClient<laser_msgs::srv_hokuyo>("srv_hokuyo");
+   ros::ServiceClient client_parameter = m.serviceClient<laser_msgs::srv_hokuyo>("srv_parameter");
 
 	
-	laser3D::srv_hokuyo estado;
-	laser3D::srv_hokuyo parameter;
+	laser_msgs::srv_hokuyo estado;
+	laser_msgs::srv_hokuyo parameter;
 
 	int res;
 	int anguloMax, anguloMin;

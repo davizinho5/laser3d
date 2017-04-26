@@ -1,13 +1,18 @@
 #include <iostream>
 #include <stdio.h>	
-#include "UrgCtrl.h"
-#include "RangeSensorParameter.h"
 #include <cstdlib>
 #include <cstdio>
-#include <sensor_msgs/LaserScan.h>
-#include "ros/ros.h"
-#include "laser3D/srv_hokuyo.h"
 #include <sstream>
+
+#include "ros/ros.h"
+
+#include <sensor_msgs/LaserScan.h>
+#include "laser_msgs/srv_hokuyo.h"
+
+#include <urg_node/URGConfig.h>
+#include <urg/UrgCtrl.h>
+#include <urg/RangeSensorParameter.h>
+
 //#include <tinyxml.h>
 using namespace std;
 using namespace qrk;
@@ -18,7 +23,7 @@ using namespace qrk;
  bool state=0;
  RangeSensorParameter parameters;
 
- bool serverHokuyoOnOff(laser3D::srv_hokuyo::Request &req, laser3D::srv_hokuyo::Response &res)
+ bool serverHokuyoOnOff(laser_msgs::srv_hokuyo::Request &req, laser_msgs::srv_hokuyo::Response &res)
  {
 
 	switch (req.option)
@@ -44,7 +49,7 @@ using namespace qrk;
 	return true;
  }
 
- bool serverHokuyoParametros(laser3D::srv_hokuyo::Request &req, laser3D::srv_hokuyo::Response &res)
+ bool serverHokuyoParametros(laser_msgs::srv_hokuyo::Request &req, laser_msgs::srv_hokuyo::Response &res)
 	{
 		parameters = urg.parameter();
 		//cout<<parameters.area_max<<endl;
