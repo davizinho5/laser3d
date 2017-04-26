@@ -65,7 +65,7 @@
 	{
 		
 		TiXmlElement *pRoot, *pParm, *pElem;
-      pRoot = doc.FirstChildElement( "parameters" );			
+     pRoot = doc.FirstChildElement( "parameters" );			
 		pParm = pRoot->FirstChildElement("dynamixel");
 		pParm = pParm->FirstChildElement("position");
 		pElem = pParm->FirstChildElement("inicial");
