@@ -18,37 +18,34 @@
 
  using namespace std;
 
- int main(int argc, char **argv)
- {
-   ros::init(argc, argv, "cliente");
+int main(int argc, char **argv)
+{
+  ros::init(argc, argv, "cliente");
+  ros::NodeHandle nh;
 
 	pcl::PointCloud<pcl::PointXYZ> cloud;
 	pcl::PCDWriter writer;
-
-   ros::NodeHandle n;
 	
-   ros::ServiceClient client1 = n.serviceClient<laser_msgs::srv_laser>("srv_laser");
+  ros::ServiceClient client1 = nh.serviceClient<laser_msgs::srv_laser>("srv_laser");
 
-   laser_msgs::srv_laser srv1;
+  laser_msgs::srv_laser srv1;
 
-/*
-	//Parametros moviemiento motor
+    //Motor movement parameters
 	int velocidadPosicion;
 	int velocidadMedida;
 	int posicionInicial;
 	int posicionFinal;
 
-	//Parametros laser
+	//Laser Parameters 
 	int anguloMin;
 	int anguloMax;
 
-	//Lectura parametros
-	nh.getParam("MotorVelPosi",    velocidadPosicion);	
-	nh.getParam("MotorVelMedida",  velocidadMedida);	
-	nh.getParam("MotorPosInicial", posicionInicial);	
-	nh.getParam("MotorPosFinal",   posicionFinal);	
-	nh.getParam("LaserAnguloMin",  anguloMin);	
-	nh.getParam("LaserAnguloMax",  anguloMax);	
+	nh.getParam("/dynamixel/speed/positioning",    velocidadPosicion);	
+	nh.getParam("/dynamixel/speed/measuring",  velocidadMedida);	
+	nh.getParam("/dynamixel/position/inicial", posicionInicial);	
+	nh.getParam("/dynamixel/position/final",   posicionFinal);	
+	nh.getParam("/hokuyo/angulo/minimo",  anguloMin);	
+	nh.getParam("/hokuyo/angulo/maximo",  anguloMax);	
 
 	srv1.request.positionSpeed=velocidadPosicion;
 	srv1.request.measureSpeed=velocidadMedida;
@@ -56,16 +53,13 @@
 	srv1.request.finalPosition=(float)posicionFinal;
 	srv1.request.anguloMin=anguloMin;
 	srv1.request.anguloMax=anguloMax;
-*/
 	
 	//Parametros moviemiento motor
 	string texto;
 	TiXmlDocument doc( "parameters.xml");
-	if(doc.LoadFile())
-	{
-		
-		TiXmlElement *pRoot, *pParm, *pElem;
-     pRoot = doc.FirstChildElement( "parameters" );			
+	if(doc.LoadFile()) {
+    TiXmlElement *pRoot, *pParm, *pElem;
+    pRoot = doc.FirstChildElement( "parameters" );			
 		pParm = pRoot->FirstChildElement("dynamixel");
 		pParm = pParm->FirstChildElement("position");
 		pElem = pParm->FirstChildElement("inicial");
@@ -107,57 +101,19 @@
 		texto = pElem->GetText();
 		srv1.request.rangoMin=atoi (texto.c_str());
 
-}
-
-
-	//Solo utilizado para testear
-		cout<<"Inicial= "<<srv1.request.initialPosition<<endl;
-		cout<<"Final= "<<srv1.request.finalPosition<<endl;
-		cout<<"Measure= "<<srv1.request.measureSpeed<<endl;
-		cout<<"Position= "<<srv1.request.positionSpeed<<endl;
-		cout<<"AnguloMin= "<<srv1.request.anguloMin<<endl;
-		cout<<"AnguloMax= "<<srv1.request.anguloMax<<endl;
-		cout<<"RangoMin= "<<srv1.request.rangoMin<<endl;
-		cout<<"RangoMax= "<<srv1.request.rangoMax<<endl;
-/*		client1.call(srv1);
-		ros::spin();
-*/
-
-
+  }
 	client1.call(srv1);
-	sensor_msgs::PointCloud2 cloud2;
-	//pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
+	
+  sensor_msgs::PointCloud2 cloud2;
 	cloud2=srv1.response.cloud;
 	pcl::fromROSMsg(cloud2, cloud);
-
-	//pcl::io::savePCDFile("cloud.pcd", cloud, false);
-	
-	//pcl::PointCloud<pcl::PointXYZ>::ConstPtr cloud3 (cloud);
-	//pcl::visualization::CloudViewer viewer("Cloud Viewer");
-	//viewer.showCloud(cloud);
-
-	//while(!viewer.wasStopped());
-
 	writer.write("nube.pcd",cloud);
-
-
 
 	int pid;
 	pid=fork();
 
-	if (pid==0)
-	{
+	if (pid==0) {
 		execl("/usr/bin/pcd_viewer", "pcd_viewer", "nube.pcd", NULL);
 	}
-
-
-
-
- 	//string name = "nube.pcd";
-	//writer.write(name,cloud);
-	//pcl::io::savePCDFileASCII ("nube.pcd", cloud);
-	//ros::spinOnce();
 	return 0;
-
-
  }
