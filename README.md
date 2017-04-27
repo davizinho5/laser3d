@@ -19,6 +19,7 @@ Install the depedencies and copy this the software into your catkin workspace an
 Connect the motor and the laser to the computer. In the case of a Hokuyo laser, it usually opens in ttyACM0 port. The Dynamixel motor normally uses ttyUSB0. In both cases, R/W permissions are needed. Use:
 
 $ sudo chmod a+rw /dev/ttyACM0
+
 $ sudo chmod a+rw /dev/ttyUSB0
 
 If the port number changes in your computer, change them in these commands and in the configuration parameters provided inside "motorised_hokuyo" ros package. 
@@ -27,6 +28,7 @@ If the port number doesn't change among differente usages, ports can be enabled 
 laser.rules 
 
 and include the following information:
+
 KERNEL==“ttyACM*”, SUBSYSTEMS==“usb”,
 ATTRS{manufacturer}==“Hokuyo Data Flex for USB”,
 SYMLINK+=“laser”
@@ -39,6 +41,7 @@ Then, type in the console:
 $ sudo service udev reload
 
 Finally, you can launch the nodes which control the motor and the laser by:
+
 $ roslaunch motorised_hokuyo laser3D.launc
 
 And ask for a new 3D scan by calling:
