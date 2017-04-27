@@ -37,13 +37,16 @@ SUBSYSTEMS==“usb”,
 ATTRS{manufacturer}==“Linux 3.2.0-44-generic-pae uhci hcd”,
 SYMLINK+=“motor”  
 
-Then, type in the console:  
+Then, type in the console:
+
 $ sudo service udev reload
 
-Finally, you can launch the nodes which control the motor and the laser by:  
+Finally, you can launch the nodes which control the motor and the laser by:
+
 $ roslaunch motorised_hokuyo laser3D.launch
 
 And ask for a new 3D scan by calling:
+
 $ rosrun motorised_hokuyo bin\_cliente
 
 This will create a PCL point cloud *.pcd which contains the laser scans.
