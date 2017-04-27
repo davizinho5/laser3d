@@ -11,7 +11,6 @@ find_package(catkin REQUIRED COMPONENTS
   urg_c
 )
 
-
 find_package( SDL REQUIRED )
 find_package( PCL 1.7 REQUIRED )
 find_package( Boost 1.40 COMPONENTS regex )
@@ -149,11 +148,13 @@ add_definitions(${PCL_DEFINITIONS})
 ## Declare a C++ executable
 # add_executable(object_detection_node src/object_detection_node.cpp)
 add_executable(bin_nodo_hokuyo src/nodo_hokuyo.cpp)
-add_executable(bin_nodo_dynamixel src/nodo_dynamixel.cpp src/motordynamixel.cpp)
+add_executable(bin_nodo_dynamixel src/nodo_dynamixel.cpp ${PARENT_DIR}/dynamixel/motordynamixel.cpp)
 add_executable(bin_nodo_laser3D src/nodo_laser3D.cpp)
+
 add_executable(bin_cliente src/cliente.cpp)
 add_executable(bin_cliente_hokuyo src/cliente_hokuyo.cpp)
-add_executable(bin_sus_hokuyo src/sus_hokuyo.cpp)
+
+add_executable(bin_sus_test_hokuyo src/test_sus_hokuyo.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -163,19 +164,14 @@ add_executable(bin_sus_hokuyo src/sus_hokuyo.cpp)
 # target_link_libraries(object_detection_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(bin_nodo_dynamixel 
-  ${catkin_LIBRARIES}
-	${LIBDXL_LIBRARIES}
-	#tinyxml
-)
-target_link_libraries(bin_cliente
-  ${catkin_LIBRARIES}
-	${PCL_LIBRARIES}
-	tinyxml
-)
 target_link_libraries(bin_nodo_laser3D
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
+)
+
+target_link_libraries(bin_nodo_dynamixel 
+  ${catkin_LIBRARIES}
+	${LIBDXL_LIBRARIES}
 )
 
 target_link_libraries (bin_nodo_hokuyo
@@ -192,14 +188,19 @@ target_link_libraries (bin_nodo_hokuyo
   urg_geometry
   urg_monitor
   urg_system
-	#tinyxml
+)
+
+target_link_libraries(bin_cliente
+  ${catkin_LIBRARIES}
+	${PCL_LIBRARIES}
+	tinyxml
 )
 
 target_link_libraries (bin_cliente_hokuyo
   ${catkin_LIBRARIES}
 )
 
-target_link_libraries (bin_sus_hokuyo
+target_link_libraries (bin_sus_test_hokuyo
   ${catkin_LIBRARIES}
 )
 

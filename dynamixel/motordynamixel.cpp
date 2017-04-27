@@ -1,18 +1,15 @@
 #include "motordynamixel.h"	//Header of the class.
-#include "dynamixel.h"		//Necessary to use the specific functions.
+#include "dynamixel.h"		  //Necessary to use the specific functions.
 
-MotorDynamixel::MotorDynamixel()
-{
+MotorDynamixel::MotorDynamixel() {
 
 }
 	
-MotorDynamixel::~MotorDynamixel()
-{
+MotorDynamixel::~MotorDynamixel() {
 		
 }
 
-int MotorDynamixel::initMotor(int id, int commDevice, int baudrate)
-{
+int MotorDynamixel::initMotor(int id, int commDevice, int baudrate) {
 	deviceID=id;
 
 	// Open USB2Dynamixel.
@@ -22,61 +19,50 @@ int MotorDynamixel::initMotor(int id, int commDevice, int baudrate)
 		return 1;
 }
 
-int MotorDynamixel::getPos()
-{
+int MotorDynamixel::getPos() {
 	return dxl_read_word(deviceID , P_PRESENT_POSITION_L);
 }
 
-float MotorDynamixel::getPosDeg()
-{
+float MotorDynamixel::getPosDeg() {
 	return POS2DEG*dxl_read_word(deviceID , P_PRESENT_POSITION_L);
 }
 
-int MotorDynamixel::getSpeed()
-{
+int MotorDynamixel::getSpeed() {
 	return dxl_read_word(deviceID , P_MOVING_SPEED_L);
 }
 
-int MotorDynamixel::getMovement()
-{
+int MotorDynamixel::getMovement() {
 	return dxl_read_byte(deviceID, P_MOVING);
 }
 
-void MotorDynamixel::moveToPos(int goalPos)
-{
+void MotorDynamixel::moveToPos(int goalPos) {
 	dxl_write_word(deviceID, P_GOAL_POSITION_L, goalPos);
 }
 
-void MotorDynamixel::moveToPos(float goalPos)
-{
+void MotorDynamixel::moveToPos(float goalPos) {
 	dxl_write_word(deviceID, P_GOAL_POSITION_L, (int)goalPos/POS2DEG);
 }
 
-void MotorDynamixel::moveToPosSpeed(int goalPos, int goalSpeed)
-{
+void MotorDynamixel::moveToPosSpeed(int goalPos, int goalSpeed) {
 	setSpeed(goalSpeed);
 	moveToPos(goalPos);
 }
 
-void MotorDynamixel::moveToPosSpeed(float goalPos, int goalSpeed)
-{
+void MotorDynamixel::moveToPosSpeed(float goalPos, int goalSpeed) {
 	setSpeed(goalSpeed);
 	moveToPos(goalPos);
 }
 
-void MotorDynamixel::moveIncrement(int increment)
-{
+void MotorDynamixel::moveIncrement(int increment) {
 	moveToPos(getPos()+increment);
 }
 
-void MotorDynamixel::moveIncrement(float increment)
-{
+void MotorDynamixel::moveIncrement(float increment) {
 	float newpos=getPos()*POS2DEG+increment;
 	moveToPos(newpos);	
 }
 
-void MotorDynamixel::setSpeed(int goalSpeed)
-{
+void MotorDynamixel::setSpeed(int goalSpeed) {
 	//Possible errors.
 	if (goalSpeed>MAXSPEED)
 		goalSpeed=MAXSPEED;
@@ -86,8 +72,7 @@ void MotorDynamixel::setSpeed(int goalSpeed)
 	dxl_write_word(deviceID, P_MOVING_SPEED_L, goalSpeed);
 }
 
-void  MotorDynamixel::setSpeedIncrement (int increment)
-{
+void  MotorDynamixel::setSpeedIncrement (int increment) {
 	int aux=getSpeed()+increment;
 	
 	if(aux>MAXSPEED)	aux=MAXSPEED;
@@ -96,13 +81,11 @@ void  MotorDynamixel::setSpeedIncrement (int increment)
 	
 }
 
-int MotorDynamixel::printCommError()
-{
+int MotorDynamixel::printCommError() {
 	return dxl_get_result();
 }
 
-int MotorDynamixel::printWorkError()
-{
+int MotorDynamixel::printWorkError() {
 	int error=0;
 	if(dxl_get_rxpacket_error(ERRBIT_VOLTAGE) == 1)
 		error+=1;

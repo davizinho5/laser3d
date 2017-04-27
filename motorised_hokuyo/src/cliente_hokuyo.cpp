@@ -11,37 +11,19 @@
 
 using namespace std;
 
-/*
-void topicHokuyo(const sensor_msgs::LaserScan::ConstPtr& scan_hokuyo) 
-{
-	
-	ROS_INFO("TOPIC NUEVO");
-   //scan.ranges = scan_hokuyo->ranges;
-	//ranges.push_back(scan_hokuyo->ranges);
-   
-}
-*/
-
-
-
-
-
- int main(int argc, char **argv)
- {
-   ros::init(argc, argv, "cliente_hokuyo");
+int main(int argc, char **argv) {
+  ros::init(argc, argv, "cliente_hokuyo");
 	ros::NodeHandle m;
 	//ros::Subscriber sus_hokuyo = m.subscribe("topic_hokuyo", 1, topicHokuyo); 
    ros::ServiceClient client_estado = m.serviceClient<laser_msgs::srv_hokuyo>("srv_hokuyo");
    ros::ServiceClient client_parameter = m.serviceClient<laser_msgs::srv_hokuyo>("srv_parameter");
 
-	
 	laser_msgs::srv_hokuyo estado;
 	laser_msgs::srv_hokuyo parameter;
 
 	int res;
 	int anguloMax, anguloMin;
-	while (ros::ok())
-	{
+	while (ros::ok())	{
 		cout<<"ELEGIR OPCION"<<endl;
 		cout<<endl;
 		cout<<"0 - Apagar"<<endl;
@@ -51,13 +33,11 @@ void topicHokuyo(const sensor_msgs::LaserScan::ConstPtr& scan_hokuyo)
 		cout<<endl;
 		cin>>res;
 		
-		if(res==1)
-		{
+		if(res==1) {
 			estado.request.option=1;
 			client_estado.call(estado);   
 		}
-		else if(res==2)
-		{
+		else if(res==2)	{
 			cout<<"Angulo Max: ";
 			cin>>anguloMax;
 			cout<<endl;
@@ -68,12 +48,9 @@ void topicHokuyo(const sensor_msgs::LaserScan::ConstPtr& scan_hokuyo)
 			parameter.request.anguloMax=(anguloMax+45)/0.25;
 			client_parameter.call(parameter); 
 		}
-		else
-		{
+		else {
 			estado.request.option=0;
 			client_estado.call(estado);
 		}		
 	}
-
-	//ros::spin();
- }
+}

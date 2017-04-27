@@ -11,6 +11,7 @@
  * 
  * The errors need to be checked in the program which uses this class, maybe using threads, 
  * and being careful with the functions because all the functions communicate  
+
  * with the motor and if threads are used some syncronization problems can occur.
  * 
  * This class need the header file EX106p.h to work. In it is included all the
