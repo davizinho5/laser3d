@@ -1,4 +1,0 @@
-<launch>
-  <rosparam command="load" file="$(find motorised_hokuyo)/config/parameters.yaml"/>
-	<node name="cliente" pkg="laser3D" type="bin_cliente" output="screen" />
-</launch>

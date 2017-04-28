@@ -1,7 +1,0 @@
-<launch>
-  <rosparam command="load" file="$(find motorised_hokuyo)/config/parameters.yaml"/>
-
-	<node name="laser3D" pkg="motorised_hokuyo" type="bin_nodo_laser3D" output="screen" />
-	<node name="dynamixel" pkg="motorised_hokuyo" type="bin_nodo_dynamixel" /> 
-	<node name="hokuyo" pkg="motorised_hokuyo" type="bin_nodo_hokuyo" />
-</launch>

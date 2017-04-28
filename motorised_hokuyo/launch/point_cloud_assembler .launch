@@ -1,0 +1,11 @@
+<launch>
+  <node type="hokuyo_node" pkg="hokuyo_node" name="hokuyo_node"/>
+  <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="1 0 0 0 0 0 1 laser_link base_link 100" />
+
+  <node type="point_cloud_assembler" pkg="laser_assembler" name="my_assembler">
+    <remap from="cloud" to="my_cloud_in"/>
+    <param name="max_clouds" type="int" value="400" /> 
+    <param name="fixed_frame" type="string" value="base_link" />
+  </node>
+
+</launch>
