@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 
   laser_msgs::srv_laser srv1;
 
-    //Motor movement parameters
+  //Motor movement parameters
 	int velocidadPosicion;
 	int velocidadMedida;
 	int posicionInicial;
@@ -54,58 +54,11 @@ int main(int argc, char **argv)
 	srv1.request.anguloMin=anguloMin;
 	srv1.request.anguloMax=anguloMax;
 	
-	//Parametros moviemiento motor
-	string texto;
-	TiXmlDocument doc( "parameters.xml");
-	if(doc.LoadFile()) {
-    TiXmlElement *pRoot, *pParm, *pElem;
-    pRoot = doc.FirstChildElement( "parameters" );			
-		pParm = pRoot->FirstChildElement("dynamixel");
-		pParm = pParm->FirstChildElement("position");
-		pElem = pParm->FirstChildElement("inicial");
-		texto = pElem->GetText();
-		srv1.request.initialPosition=atoi (texto.c_str());
-
-		pElem = pParm->FirstChildElement("final");
-		texto = pElem->GetText();
-		srv1.request.finalPosition=atoi (texto.c_str());
-
-		pParm = pRoot->FirstChildElement("dynamixel");
-		pParm = pParm->FirstChildElement("speed");
-		pElem = pParm->FirstChildElement("measuring");
-		texto = pElem->GetText();
-		srv1.request.measureSpeed=atoi (texto.c_str());
-
-		pElem = pParm->FirstChildElement("positioning");
-		texto = pElem->GetText();
-		srv1.request.positionSpeed=atoi (texto.c_str());
-
-
-		pParm = pRoot->FirstChildElement("laser");
-		pParm = pParm->FirstChildElement("angulo");
-		pElem = pParm->FirstChildElement("maximo");
-		texto = pElem->GetText();
-		srv1.request.anguloMax=atoi (texto.c_str());
-
-		pElem = pParm->FirstChildElement("minimo");
-		texto = pElem->GetText();
-		srv1.request.anguloMin=atoi (texto.c_str());
-
-		pParm = pRoot->FirstChildElement("laser");
-		pParm = pParm->FirstChildElement("rango");
-		pElem = pParm->FirstChildElement("maximo");
-		texto = pElem->GetText();
-		srv1.request.rangoMax=atoi (texto.c_str());
-
-		pElem = pParm->FirstChildElement("minimo");
-		texto = pElem->GetText();
-		srv1.request.rangoMin=atoi (texto.c_str());
-
-  }
 	client1.call(srv1);
 	
   sensor_msgs::PointCloud2 cloud2;
 	cloud2=srv1.response.cloud;
+
 	pcl::fromROSMsg(cloud2, cloud);
 	writer.write("nube.pcd",cloud);
 

@@ -19,33 +19,31 @@
 
 #define DEG2RAD_c M_PI/180.0
  
- using namespace std;
+using namespace std;
  
- vector<float> lut_cos_a;
- vector<float> lut_sin_a;
+vector<float> lut_cos_a;
+vector<float> lut_sin_a;
 
- vector<float> positions;
- vector<vector<float> > ranges;
+vector<float> positions;
+vector<vector<float> > ranges;
  
- bool flag=0;
+bool flag=0;
 
 
- bool serverlaser_msgs(laser_msgs::srv_laser::Request &req, laser_msgs::srv_laser::Response &res)
- {
+bool serverlaser_msgs(laser_msgs::srv_laser::Request &req, laser_msgs::srv_laser::Response &res) {
 
 	ROS_INFO("SERVICIO LASER LANZADO");
 	ros::NodeHandle n;
 	ros::ServiceClient client_move = n.serviceClient<laser_msgs::srv_dynamixel>("srv_move");
-   ros::ServiceClient client_position = n.serviceClient<laser_msgs::srv_dynamixel>("srv_position");
-   ros::ServiceClient client_errors = n.serviceClient<laser_msgs::srv_dynamixel>("srv_errors");
-   ros::ServiceClient client_estado = n.serviceClient<laser_msgs::srv_hokuyo>("srv_hokuyo");
-   ros::ServiceClient client_parameter = n.serviceClient<laser_msgs::srv_hokuyo>("srv_parameter");
+  ros::ServiceClient client_position = n.serviceClient<laser_msgs::srv_dynamixel>("srv_position");
+  ros::ServiceClient client_errors = n.serviceClient<laser_msgs::srv_dynamixel>("srv_errors");
+  ros::ServiceClient client_estado = n.serviceClient<laser_msgs::srv_hokuyo>("srv_hokuyo");
+  ros::ServiceClient client_parameter = n.serviceClient<laser_msgs::srv_hokuyo>("srv_parameter");
 
-
-   laser_msgs::srv_dynamixel move;
-   laser_msgs::srv_dynamixel pos;
-   laser_msgs::srv_dynamixel errors;
-	laser_msgs::srv_hokuyo estado;
+  laser_msgs::srv_dynamixel move;
+  laser_msgs::srv_dynamixel pos;
+  laser_msgs::srv_dynamixel errors;
+  laser_msgs::srv_hokuyo estado;
 	laser_msgs::srv_hokuyo parameter;
 
 	//Variables motor
@@ -54,7 +52,6 @@
 	float initialPosition;
 	float finalPosition;
 	bool sentido_giro;
-
 
 	//Conocer posicion del motor
 	client_position.call(pos);
@@ -70,7 +67,6 @@
 		initialPosition=req.finalPosition;
 		finalPosition=req.initialPosition;
 	}
-
 
 	//Parametros de movimiento del motor
 	//Por seguridad se comprueban las velocidades
@@ -116,12 +112,10 @@
    }
 	while((sentido_giro==0) ? pos.response.position_o>initialPosition+1 : pos.response.position_o<initialPosition-1);
 
-
-
 	//Encender laser
-	ROS_INFO("LASER PUBLICANDO");
 	estado.request.option=1;
 	client_estado.call(estado);   
+	ROS_INFO("LASER PUBLICANDO");
 
 	//Mover hasta el final
 	ROS_INFO("MOVIENDO MOTOR HASTAL EL FINAL"); 
@@ -129,36 +123,32 @@
 	move.request.speed=measureSpeed;
 	//Sentido de giro previsto
 	client_position.call(pos);
-	if(pos.response.position_o>move.request.position_i)		sentido_giro=0;
-	else																		sentido_giro=1;
+	if(pos.response.position_o>move.request.position_i)		
+    sentido_giro=0;
+	else
+    sentido_giro=1;
 	//Mover
 	client_move.call(move);
 	
+  do {
 
-  	do {
-
-		if (flag)
-		{
+		if (flag) {
 			//Se pide la posicion del motor
 			client_position.call(pos);
 			//ROS_INFO("Posicion: %f", pos.response.position_o);
 			positions.push_back(pos.response.position_o);
 			//ranges.push_back(scan.ranges);
-			
 			flag=0;
-		}
-		
+		}	
 		ros::spinOnce();
 	}
 	while((sentido_giro==0) ? pos.response.position_o>finalPosition+1 : pos.response.position_o<finalPosition-1);
 	//Se puede separar en dos if para mas rapidez
 
 	//Apagar laser
-	ROS_INFO("LASER APAGADO");
 	estado.request.option=0;
 	client_estado.call(estado);
-
-
+	ROS_INFO("LASER APAGADO");
 
 	//Transformar coordenadas
 	ROS_INFO("REALIZANDO TRANSFORMACIONES");
@@ -197,7 +187,6 @@
 	sensor_msgs::PointCloud2 cloud2;
 	pcl::toROSMsg(cloud, cloud2); 
 	 
-
 	//Publicar nube de puntos
 	ROS_INFO("NUBE PUBLICADA");
 	res.cloud=cloud2;
@@ -219,9 +208,8 @@ void topicHokuyo(const sensor_msgs::LaserScan::ConstPtr& scan_hokuyo)
 
 
 
- int main(int argc, char **argv)
- {
-   ros::init(argc, argv, "laser_msgs");
+int main(int argc, char **argv) {
+  ros::init(argc, argv, "laser_msgs");
 	ros::NodeHandle m;
 	ros::Subscriber sus_hokuyo = m.subscribe("topic_hokuyo", 1, topicHokuyo); 
 	ros::ServiceServer service1 = m.advertiseService("srv_laser", serverlaser_msgs);
