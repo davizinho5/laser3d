@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(my_dynamixel_tutorial)
+project(laser3d)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -7,12 +7,24 @@ project(my_dynamixel_tutorial)
 find_package(catkin REQUIRED COMPONENTS
   dynamixel_controllers
   roscpp
-  rospy
+  #rospy
   std_msgs
+  laser_msgs
+  dynamixel_msgs
+  tf
+  #urg_c
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+find_package( SDL REQUIRED )
+find_package( PCL 1.7 REQUIRED )
+find_package( Boost 1.40 COMPONENTS )
+
+#get_filename_component(PARENT_DIR ${PROJECT_SOURCE_DIR} PATH)
+#message("PARENT_DIR: ${PARENT_DIR}" )
+#set(DXL_LIBRARY_DIRS "${PARENT_DIR}/dynamixel")
+#set(DXL_INCLUDE_DIRS "${PARENT_DIR}/dynamixel")
+#set(LIBDXL_LIBRARIES "dxl")
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -116,74 +128,38 @@ catkin_package(
 # include_directories(include)
 include_directories(
   ${catkin_INCLUDE_DIRS}
+  ${PCL_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIRS}
 )
 
+link_directories(
+  ${PCL_LIBRARY_DIRS}
+  ${Boost_LIBRARY_DIRS})
+
+add_definitions(${PCL_DEFINITIONS})
+
 ## Declare a C++ library
-# add_library(my_dynamixel_tutorial
-#   src/${PROJECT_NAME}/my_dynamixel_tutorial.cpp
+# add_library(object_detection
+#   src/${PROJECT_NAME}/object_detection.cpp
 # )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(my_dynamixel_tutorial ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(object_detection ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-# add_executable(my_dynamixel_tutorial_node src/my_dynamixel_tutorial_node.cpp)
+add_executable(bin_laser_assemble_req src/laser_request.cpp)
+add_executable(bin_motor_state_pub src/motor_tf_pub.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(my_dynamixel_tutorial_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(object_detection_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(my_dynamixel_tutorial_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(bin_laser_assemble_req
+   ${catkin_LIBRARIES} )
+target_link_libraries(bin_motor_state_pub
+   ${catkin_LIBRARIES} )
 
-#############
-## Install ##
-#############
 
-# all install targets should use catkin DESTINATION variables
-# See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
-
-## Mark executable scripts (Python etc.) for installation
-## in contrast to setup.py, you can choose the destination
-# install(PROGRAMS
-#   scripts/my_python_script
-#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
-
-## Mark executables and/or libraries for installation
-# install(TARGETS my_dynamixel_tutorial my_dynamixel_tutorial_node
-#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
-
-## Mark cpp header files for installation
-# install(DIRECTORY include/${PROJECT_NAME}/
-#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-#   FILES_MATCHING PATTERN "*.h"
-#   PATTERN ".svn" EXCLUDE
-# )
-
-## Mark other files for installation (e.g. launch and bag files, etc.)
-# install(FILES
-#   # myfile1
-#   # myfile2
-#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-# )
-
-#############
-## Testing ##
-#############
-
-## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_my_dynamixel_tutorial.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
-
-## Add folders to be run by python nosetests
-# catkin_add_nosetests(test)
