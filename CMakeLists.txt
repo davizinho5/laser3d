@@ -7,12 +7,11 @@ project(laser3d)
 find_package(catkin REQUIRED COMPONENTS
   dynamixel_controllers
   roscpp
-  #rospy
   std_msgs
   laser_msgs
   dynamixel_msgs
   tf
-  #urg_c
+  sensor_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -149,17 +148,29 @@ add_definitions(${PCL_DEFINITIONS})
 # add_dependencies(object_detection ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-add_executable(bin_laser_assemble_req src/laser_request.cpp)
-add_executable(bin_motor_state_pub src/motor_tf_pub.cpp)
+add_executable(bin_laser_scan_assemble_req src/laser_scan_request.cpp)
+add_executable(bin_laser_pc_assemble_req src/laser_pc_request.cpp)
+
+add_executable(bin_motor_state_pub_hokuyo src/motor_tf_pub_hokuyo.cpp)
+add_executable(bin_motor_state_pub_velodyne src/motor_tf_pub_velodyne.cpp)
+
+add_executable(bin_point_cloud_converter_node src/pc_to_pc2.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 #add_dependencies(object_detection_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(bin_laser_assemble_req
+target_link_libraries(bin_laser_scan_assemble_req
    ${catkin_LIBRARIES} )
-target_link_libraries(bin_motor_state_pub
+target_link_libraries(bin_laser_pc_assemble_req
    ${catkin_LIBRARIES} )
+target_link_libraries(bin_motor_state_pub_hokuyo
+   ${catkin_LIBRARIES} )
+target_link_libraries(bin_motor_state_pub_velodyne
+   ${catkin_LIBRARIES} )
+target_link_libraries(bin_point_cloud_converter_node
+  ${catkin_LIBRARIES}
+)
 
 

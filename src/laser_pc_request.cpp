@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
   ros::ServiceClient client = nh.serviceClient<laser_assembler::AssembleScans>("assemble_scans");
 
   ros::Publisher pub_command = nh.advertise<std_msgs::Float64>("/laser_controller/command", 10);
-  ros::Publisher pub_cloud = nh.advertise<sensor_msgs::PointCloud>("/assembled_cloud", 10);
+  ros::Publisher pub_cloud = nh.advertise<sensor_msgs::PointCloud>("/assembled_cloud", 10, true);
  
   std_msgs::Float64 motor_pos; 
   dynamixel_msgs::JointStateConstPtr sharedPtr;
@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
   if(sharedPtr->current_pos > 3.0) 
     motor_pos.data = 0.0;
   else
-    motor_pos.data = 3.141592;  
+    motor_pos.data = 3.1516; // PI + allowed error
 
   laser_assembler::AssembleScans srv;  
   // assemble from "NOW"
@@ -40,19 +40,17 @@ int main(int argc, char **argv) {
   // check the motor has finished
   do{
     sharedPtr = ros::topic::waitForMessage<dynamixel_msgs::JointState>("/laser_controller/state", ros::Duration(0.3));	
-    //std::cout << "Posicion actual " << sharedPtr->current_pos - motor_pos.data << std::endl;
   }while( fabs(sharedPtr->current_pos - motor_pos.data) > 0.01); // 0.5 degrees error accepted
 
   // assemble untill "NOW"
   srv.request.end = ros::Time::now();
   if (client.call(srv)) {
-    //std::cout << "Got cloud with " <<  srv.response.cloud.points.size() << " points\n";
+    std::cout << "Got cloud with " <<  srv.response.cloud.points.size() << " points\n";
     pub_cloud.publish(srv.response.cloud);
-  }
+  } 
   else {
     printf("Service call failed\n");
   }
   return 0;
-
 }
 

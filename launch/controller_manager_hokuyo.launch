@@ -13,13 +13,13 @@
         </rosparam>
     </node>
 
-  <node type="hokuyo_node" pkg="hokuyo_node" name="hokuyo_node"/> 
+	<!-- Laser Hokuyo -->
+  <node pkg="hokuyo_node" type="hokuyo_node" name="hokuyo_node"/> 
 
 	<!-- tf::Transform encodes like: (x,y,z,w), being the identity rotation = (0,0,0,1) -->
-  
-  <node pkg="tf" type="static_transform_publisher" name="laser_tf_broadcaster" args="0 0 0.5 0 -0.707 0 0.707 base_link laser_link 100" />
+    <node pkg="tf" type="static_transform_publisher" name="laser_tf_broadcaster" args="0 0 0.5 0 -0.707 0 0.707 base_link laser_link 100" />
 
-  <node pkg="laser3d" type="bin_motor_state_pub" name="motor_tf_pub"/>
+  <node pkg="laser3d" type="bin_motor_state_pub_hokuyo" name="motor_tf_pub"/>
 
   <!-- start rviz -->
   <node pkg="rviz" type="rviz" name="my_rviz" args="-d $(find laser3d)/config/laser.rviz"/>
