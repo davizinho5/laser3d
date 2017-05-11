@@ -1,7 +1,0 @@
-roscore
-
-rosrun velodyne_driver velodyne_node _model:=VLP-16
-
-roslaunch velodyne_pointcloud 32e_points.launch calibration:=/home/das/catkin_ws/src/laser3d/config/VLP16.yaml
-
-rosrun rviz rviz -f velodyne

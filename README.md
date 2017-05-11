@@ -5,7 +5,7 @@ This software assembles laser scans or point clouds from a laser that is turned 
 - [Simple DirectMedia Layer](http://www.libsdl.org/)
 - [BOOST](http://www.boost.org/)
 - [URG](http://www.hokuyo-aut.jp/) 
-- Several ROS nodes, check package.xml.
+- Several ROS packages, check package.xml.
 
 ## USAGE
 

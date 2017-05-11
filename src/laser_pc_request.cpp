@@ -2,7 +2,10 @@
 #include <laser_assembler/AssembleScans.h>
 #include <dynamixel_msgs/JointState.h>
 #include <sensor_msgs/PointCloud.h>
+#include <sensor_msgs/PointCloud2.h>
+#include <sensor_msgs/point_cloud_conversion.h>
 #include <std_msgs/Float64.h>
+
 
 int main(int argc, char **argv) {
   ros::init(argc, argv, "laser_motor_controller");
@@ -17,7 +20,8 @@ int main(int argc, char **argv) {
   ros::ServiceClient client = nh.serviceClient<laser_assembler::AssembleScans>("assemble_scans");
 
   ros::Publisher pub_command = nh.advertise<std_msgs::Float64>("/laser_controller/command", 10);
-  ros::Publisher pub_cloud = nh.advertise<sensor_msgs::PointCloud>("/assembled_cloud", 10, true);
+  ros::Publisher pub_cloud = nh.advertise<sensor_msgs::PointCloud>("/assembled_cloud", 10);
+  ros::Publisher pub_cloud2 = nh.advertise<sensor_msgs::PointCloud2>("/assembled_cloud2", 10);
  
   std_msgs::Float64 motor_pos; 
   dynamixel_msgs::JointStateConstPtr sharedPtr;
@@ -49,9 +53,20 @@ int main(int argc, char **argv) {
     pub_cloud.publish(srv.response.cloud);
     // if the node is going to finish, the publisher needs some time to send the data
     ros::Duration(0.5).sleep();
+   
+    ROS_DEBUG ("[point_cloud_converter] Got a PointCloud with %d points.", (int)srv.response.cloud.points.size() );
+
+    // conversion to PointCloud2
+    sensor_msgs::PointCloud2 pcloud2;
+    if (!sensor_msgs::convertPointCloudToPointCloud2(srv.response.cloud, pcloud2)) {
+      ROS_ERROR ("[point_cloud_converter] Conversion from sensor_msgs::PointCloud to sensor_msgs::PointCloud2 failed!");
+      return -1;
+    } 
+    pub_cloud2.publish (pcloud2);
+    ros::Duration(0.5).sleep();
   } 
   else {
-    printf("Service call failed\n");
+    printf("Assembling service call failed\n");
   }
   return 0;
 }

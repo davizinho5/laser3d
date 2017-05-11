@@ -5,7 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /TF1/Frames1
-      Splitter Ratio: 0.470588
+      Splitter Ratio: 0.463889
     Tree Height: 595
   - Class: rviz/Selection
     Name: Selection
@@ -62,7 +62,7 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 106
+      Max Intensity: 100
       Min Color: 0; 0; 0
       Min Intensity: 0
       Name: PC2_laser
@@ -92,7 +92,7 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 106
+      Max Intensity: 100
       Min Color: 0; 0; 0
       Min Intensity: 0
       Name: PC_converted
@@ -145,7 +145,7 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 109
+      Max Intensity: 183
       Min Color: 0; 0; 0
       Min Intensity: 0
       Name: PC_assembled
@@ -156,6 +156,66 @@ Visualization Manager:
       Size (m): 0.01
       Style: Flat Squares
       Topic: /assembled_cloud
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 132
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: PC2_assembled
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.01
+      Style: Flat Squares
+      Topic: /assembled_cloud2
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 158
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: PC2_filtered
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.01
+      Style: Flat Squares
+      Topic: /voxel_grid/output
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -184,22 +244,22 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 19.2449
+      Distance: 7.80877
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.06
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.663251
-        Y: -0.817212
-        Z: 1.5734
+        X: -0.596511
+        Y: -0.17208
+        Z: 1.53295
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.314797
+      Pitch: 0.499799
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.66359
+      Yaw: 3.48182
     Saved: ~
 Window Geometry:
   Displays:
