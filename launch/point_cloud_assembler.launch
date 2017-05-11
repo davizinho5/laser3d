@@ -4,5 +4,4 @@
     <param name="max_clouds" type="int" value="400" /> 
     <param name="fixed_frame" type="string" value="laser" />
   </node>
-
 </launch>

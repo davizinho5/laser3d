@@ -1,20 +1,15 @@
 ROS Indigo version tested under Ubuntu 14.04 LTS
 
-This software is compound by two ros packages
-- laser_msgs: contains the necessaty messages to communicate the information. 
-- motorised_hokuyo: contains ros nodes to use the system.
-
-The software has the following dependencies:
+This software assembles laser scans or point clouds from a laser that is turned by a dynamixel motor and merges them into a bigger point cloud. It has the following dependencies:
 - [Point cloud library](http://pointclouds.org/)
 - [Simple DirectMedia Layer](http://www.libsdl.org/)
 - [BOOST](http://www.boost.org/)
 - [URG](http://www.hokuyo-aut.jp/) 
-- urg-c ROS node: 
-- DXL library, included in the 3rd party sofware folder in case you need to recompile it. Just use the Makefile provided anc copy the headers and library files into dynamixel folder.
+- Several ROS nodes, check package.xml.
 
 ## USAGE
 
-Install the depedencies and copy this the software into your catkin workspace and compile it. 
+Install the depedencies, copy this the software into your catkin workspace and compile it. 
 
 Connect the motor and the laser to the computer. In the case of a Hokuyo laser, it usually opens in ttyACM0 port. The Dynamixel motor normally uses ttyUSB0. In both cases, R/W permissions are needed. Use:
 
@@ -23,32 +18,37 @@ $ sudo chmod a+rw /dev/ttyUSB0
 
 If the port number changes in your computer, change them in these commands and in the configuration parameters provided inside "motorised_hokuyo" ros package. 
 
-If the port number doesn't change among differente usages, ports can be enabled by writing a 'rules' files in /etc/udev/rules.d. Name the file:
-laser.rules 
+When using a Velodyne laser, configure the network as provided by the manufacter. 
 
-and include the following information:
+Finally, you can launch the driver the motor and the laser drivers by (choose depending on your laser). Besides, rviz is started with a proper config file.
 
-KERNEL==“ttyACM*”,   
-SUBSYSTEMS==“usb”,  
-ATTRS{manufacturer}==“Hokuyo Data Flex for USB”,  
-SYMLINK+=“laser”  
-KERNEL==“ttyUSB*”,  
-SUBSYSTEMS==“usb”,  
-ATTRS{manufacturer}==“Linux 3.2.0-44-generic-pae uhci hcd”,
-SYMLINK+=“motor”  
+$ roslaunch laser3d controller\_manager\_velodyne.launch  
+$ roslaunch laser3d controller\_manager\_hokuyo.launch
 
-Then, type in the console:
+Then, start the dynamixel motor controller by:
 
-$ sudo service udev reload
+$ roslaunch laser3d start\_motor\_controller.launch 
 
-Finally, you can launch the nodes which control the motor and the laser by:
+If everything goes fine, the motor controller should end showing messages similar to this:
 
-$ roslaunch motorised_hokuyo laser3D.launch
+[INFO] [WallTime: 1494489930.102583] Controller laser_controller successfully started.  
+[laser_controller_spawner-1] process has finished cleanly  
+all processes on machine have died, roslaunch will exit shutting down processing monitor...  
+... shutting down processing monitor complete  
+done
 
-And ask for a new 3D scan by calling:
+If velodyne laser is used, the sensor::msgs PintCloud2 message provided has to be converted to sensor::msgs PintCloud, in order to do this launch:
 
-$ rosrun motorised_hokuyo bin\_cliente
+$ roslaunch laser3d pc_converter.launch
 
-This will create a PCL point cloud *.pcd which contains the laser scans.
+Then, the assembler node has to be launched. Depending on the type of information provided by your laser you have to launch laser\_aseembler (hokuyo) or point\_cloud\_aseembler (velodyne).
+ 
+$ roslaunch laser3d laser\_aseembler.launch  
+$ roslaunch laser3d point\_cloud\_aseembler.launch
+
+Finally, there is an testing node which commands the motor to move, the assembler to merge the information and finally publishes it so that it can be seen in rviz. 
+
+
+
 
 

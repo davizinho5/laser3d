@@ -22,9 +22,8 @@
   </include>
 
   <!-- tf::Transform encodes like: (x,y,z,w), being the identity rotation = (0,0,0,1) -->
-  <!-- 0 0 0.5 0 -0.707 0 0.707 for the hokuyo laser, 0.5 meters could be any other distance--> 
+  <!-- 0 0 0.5 0 -0.707 0 0.707 for the velodyne laser, 0.5 meters could be any other distance--> 
   <node pkg="tf" type="static_transform_publisher" name="laser_tf_broadcaster" args="0 0 0.5 0 0.707 0 0.707 base_link laser 100" />
-
   <node pkg="laser3d" type="bin_motor_state_pub_velodyne" name="motor_tf_pub"/>
 
   <!-- start rviz -->
