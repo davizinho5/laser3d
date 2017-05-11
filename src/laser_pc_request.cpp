@@ -47,6 +47,8 @@ int main(int argc, char **argv) {
   if (client.call(srv)) {
     std::cout << "Got cloud with " <<  srv.response.cloud.points.size() << " points\n";
     pub_cloud.publish(srv.response.cloud);
+    // if the node is going to finish, the publisher needs some time to send the data
+    ros::Duration(0.5).sleep();
   } 
   else {
     printf("Service call failed\n");
