@@ -8,7 +8,6 @@ find_package(catkin REQUIRED COMPONENTS
   dynamixel_controllers
   roscpp
   std_msgs
-  laser_msgs
   dynamixel_msgs
   tf
   sensor_msgs
@@ -18,13 +17,6 @@ find_package(catkin REQUIRED COMPONENTS
 find_package( SDL REQUIRED )
 find_package( PCL 1.7 REQUIRED )
 find_package( Boost 1.40 COMPONENTS )
-
-#get_filename_component(PARENT_DIR ${PROJECT_SOURCE_DIR} PATH)
-#message("PARENT_DIR: ${PARENT_DIR}" )
-#set(DXL_LIBRARY_DIRS "${PARENT_DIR}/dynamixel")
-#set(DXL_INCLUDE_DIRS "${PARENT_DIR}/dynamixel")
-#set(LIBDXL_LIBRARIES "dxl")
-
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed

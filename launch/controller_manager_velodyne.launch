@@ -18,7 +18,7 @@
 
   <!-- start Velodyne launcher -->
   <include file="$(find velodyne_pointcloud)/launch/32e_points.launch">
-    <arg name="calibration" value="/home/das/catkin_ws/src/laser3d/config/VLP16.yaml"/>
+    <arg name="calibration" value="$(find laser3d)/config/VLP16.yaml"/>
   </include>
 
   <!-- tf::Transform encodes like: (x,y,z,w), being the identity rotation = (0,0,0,1) -->

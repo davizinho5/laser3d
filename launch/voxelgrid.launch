@@ -13,7 +13,7 @@ http://wiki.ros.org/pcl_ros/Tutorials -->
     <remap from="~input" to="/assembled_cloud2" />
     <rosparam>
       filter_field_name: z
-      filter_limit_min: -1.01
+      filter_limit_min: -1.0
       filter_limit_max: 10.5
       filter_limit_negative: False
       leaf_size: 0.01
