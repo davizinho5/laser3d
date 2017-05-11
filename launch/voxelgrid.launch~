@@ -1,0 +1,24 @@
+<!-- The following launch file starts a nodelet manager together with a VoxelGrid PCL filter nodelet. The input PointCloud2 topic is set to /camera/depth/points.
+
+The default filtering values are set to downsample the data with a leaf size of 0.01 meters.
+
+For other filters, check:
+http://wiki.ros.org/pcl_ros/Tutorials -->
+
+<launch>
+  <node pkg="nodelet" type="nodelet" name="pcl_manager" args="manager" output="screen" />
+
+  <!-- Run a VoxelGrid filter to clean NaNs and downsample the data -->
+  <node pkg="nodelet" type="nodelet" name="voxel_grid" args="load pcl/VoxelGrid pcl_manager" output="screen">
+    <remap from="~input" to="/assembled_cloud2" />
+    <rosparam>
+      filter_field_name: z
+      filter_limit_min: 0.01
+      filter_limit_max: 10.5
+      filter_limit_negative: False
+      leaf_size: 0.01
+    </rosparam>
+  </node>
+</launch>
+
+
