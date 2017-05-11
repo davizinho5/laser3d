@@ -1,0 +1,9 @@
+Software to perform 3D laser scans with a dynamixel motor and a laser mounted on top of it. Be aware that the assembling of the information is done based on the assumption that the laser turns exactly around the axis of the motor. 
+
+There are two versions of the software, the simplest one is asynchrnous. Based on the assumption that the motor spins at a constant velocity an the laser data adquisition is perfectly done in a certain moment. Therefore, the needed transformation to assemble the laser readings are known in advanced. This version is ready for a 2D Hokuyo laser (http://wiki.ros.org/hokuyo_node/).
+
+In the second version the information is synchronised using the tf package and ROS timestamps through laser assembler node (http://wiki.ros.org/laser_assembler). This version is both ready to be used with a 2D Hokuyo and a 3D Velodyne (http://wiki.ros.org/velodyne).
+
+Choose the version you need according to your Ubuntu/ROS version and needs.
+
+
