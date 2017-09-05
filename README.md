@@ -1,4 +1,4 @@
-ROS Indigo version tested under Ubuntu 14.04 LTS
+ROS Indigo version tested under Ubuntu 14.04 LTS.
 
 This software assembles laser scans or point clouds from a laser that is turned by a dynamixel motor and merges them into a bigger point cloud. It has the following dependencies:
 - [Point cloud library](http://pointclouds.org/)
@@ -19,7 +19,7 @@ If the port number changes in your computer, change them in these commands and i
 
 When using a Velodyne laser, configure the network as provided by the manufacter. 
 
-Then, you can launch the driver the motor and the laser drivers by (choose depending on your laser). Besides, rviz is started with a proper config file.
+Then, you can launch the driver of the motor and the laser drivers by (choose depending on your laser). Besides, rviz is started with a proper config file.
 
 $ roslaunch laser3d controller\_manager\_velodyne.launch      (velodyne)  
 $ roslaunch laser3d controller\_manager\_hokuyo.launch        (hokuyo)
