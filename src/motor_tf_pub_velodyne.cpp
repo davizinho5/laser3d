@@ -2,7 +2,7 @@
 #include <dynamixel_msgs/JointState.h>
 #include <tf/transform_broadcaster.h>
 
-void stateCallback(const dynamixel_msgs::JointStateConstPtr& msg){
+void stateCallback(const dynamixel_msgs::JointStateConstPtr& msg) {
   static tf::TransformBroadcaster br;
   tf::Transform transform;
   transform.setOrigin( tf::Vector3(0.0, 0.0, 0.0) );

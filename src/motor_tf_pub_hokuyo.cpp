@@ -9,7 +9,7 @@ void stateCallback(const dynamixel_msgs::JointStateConstPtr& msg) {
   tf::Quaternion q;
   q.setRPY(msg->current_pos, 0, 0);
   transform.setRotation(q);
-  br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "laser_link", "laser"));
+  br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "laser", "velodyne"));
 }
 
 

@@ -40,14 +40,14 @@ all processes on machine have died, roslaunch will exit shutting down processing
 ... shutting down processing monitor complete  
 done
 
-If velodyne laser is used, the sensor::msgs PintCloud2 message provided has to be converted to sensor::msgs PintCloud, in order to do this launch:
+If velodyne laser is used, the sensor::msgs PointCloud2 message provided has to be converted to sensor::msgs PointCloud, in order to do this launch:
 
 $ roslaunch laser3d pc_converter.launch
 
 Then, the assembler node has to be launched. Depending on the type of information provided by your laser you have to launch laser\_aseembler (hokuyo) or point\_cloud\_aseembler (velodyne).
  
-$ roslaunch laser3d point\_cloud\_aseembler.launch       (velodyne)  
-$ roslaunch laser3d laser\_aseembler.launch              (hokuyo)
+$ roslaunch laser3d point\_cloud\_assembler.launch       (velodyne)  
+$ roslaunch laser3d laser\_assembler.launch              (hokuyo)
 
 Finally, there is an testing node which commands the motor to move, asks the assembler to merge the information and finally publishes it so that it can be seen in rviz. for calling this node:
 
