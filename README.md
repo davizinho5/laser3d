@@ -1,4 +1,8 @@
-ROS Indigo version tested under Ubuntu 14.04 LTS.
+ROS Kinetic version tested under Ubuntu 16.04 LTS.
+
+In ROS Kinetic, Velodyne drivers are not included in the official release, I got the from this repository: 
+
+https://github.com/ros-drivers/velodyne
 
 This software assembles laser scans or point clouds from a laser that is turned by a dynamixel motor and merges them into a bigger point cloud. It has the following dependencies:
 - [Point cloud library](http://pointclouds.org/)
@@ -6,9 +10,9 @@ This software assembles laser scans or point clouds from a laser that is turned 
 - [URG](http://www.hokuyo-aut.jp/) 
 - Several ROS packages, check package.xml.
 
-## USAGE
+Install the depedencies, copy this the software into your catkin workspace and compile it.  
 
-Install the depedencies, copy this the software into your catkin workspace and compile it. 
+## USAGE
 
 Connect the motor and the laser to the computer. In the case of a Hokuyo laser, it usually opens in ttyACM0 port. The Dynamixel motor normally uses ttyUSB0. In both cases, R/W permissions are needed. Use:
 
@@ -17,7 +21,7 @@ $ sudo chmod a+rw /dev/ttyACM0      (only with hokuyo)
 
 If the port number changes in your computer, change them in these commands and in the configuration parameters provided inside "motorised_hokuyo" ros package. 
 
-When using a Velodyne laser, configure the network as provided by the manufacter. 
+When using a Velodyne laser, configure the network as provided by the manufacturer. 
 
 Then, you can launch the driver of the motor and the laser drivers by (choose depending on your laser). Besides, rviz is started with a proper config file.
 
