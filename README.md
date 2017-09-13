@@ -1,6 +1,6 @@
 ROS Kinetic version tested under Ubuntu 16.04 LTS.
 
-In ROS Kinetic, Velodyne drivers are not included in the official release, I got the from this repository: 
+In ROS Kinetic, Velodyne drivers are not included in the official release, I got them from this repository: 
 
 https://github.com/ros-drivers/velodyne
 
