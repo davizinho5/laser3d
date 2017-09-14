@@ -7,12 +7,6 @@
 #include <sensor_msgs/point_cloud_conversion.h>
 #include <std_msgs/Float64.h>
 
-// For debug purposes
-void wait() {
-  std::cout << "Press ENTER to continue...\n";
-  std::cin.ignore();
-}
-
 int main(int argc, char **argv) {
   ros::init(argc, argv, "laser_motor_controller");
   ros::NodeHandle nh;
@@ -32,6 +26,7 @@ int main(int argc, char **argv) {
   std_msgs::Float64 motor_pos; 
   dynamixel_msgs::JointStateConstPtr sharedPtr;
 
+  // Check actual position and set next position command
   do{
     sharedPtr = ros::topic::waitForMessage<dynamixel_msgs::JointState>("/laser_controller/state", ros::Duration(0.2));	
   }while(sharedPtr == NULL);
@@ -48,14 +43,11 @@ int main(int argc, char **argv) {
   nh.getParam("/laser_controller/joint_speed", srv_req.request.speed);
  
   if (speed_client.call(srv_req)) {
-    ROS_INFO("Speed set in the motor");
+    std::cout << "Speed set in the motor: " << srv_req.request.speed << std::endl;
   } else {
     ROS_ERROR("Failed to call service add_two_ints");
     return 1;
   }
-  
-  std::cout << srv_req.request.speed << std::endl;
-  wait();
 
   laser_assembler::AssembleScans srv;  
   // assemble from "NOW"

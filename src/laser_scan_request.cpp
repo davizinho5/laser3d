@@ -1,6 +1,7 @@
 #include <ros/ros.h>
 #include <laser_assembler/AssembleScans.h>
 #include <dynamixel_msgs/JointState.h>
+#include <dynamixel_controllers/SetSpeed.h>
 #include <sensor_msgs/PointCloud.h>
 #include <std_msgs/Float64.h>
 
@@ -22,6 +23,7 @@ int main(int argc, char **argv) {
   std_msgs::Float64 motor_pos; 
   dynamixel_msgs::JointStateConstPtr sharedPtr;
   
+  // Check actual position and set next position command
   do{
     sharedPtr = ros::topic::waitForMessage<dynamixel_msgs::JointState>("/laser_controller/state", ros::Duration(0.2));	
   }while(sharedPtr == NULL);
@@ -30,6 +32,20 @@ int main(int argc, char **argv) {
     motor_pos.data = 0.0;
   else
     motor_pos.data = 3.1516; // PI + allowed error
+
+  // Set the speed of the motor
+  ros::service::waitForService("/laser_controller/set_speed");
+  ros::ServiceClient speed_client = nh.serviceClient<dynamixel_controllers::SetSpeed>("/laser_controller/set_speed");
+  dynamixel_controllers::SetSpeed srv_req;
+  nh.getParam("/laser_controller/joint_speed", srv_req.request.speed);
+ 
+  if (speed_client.call(srv_req)) {
+    std::cout << "Speed set in the motor: " << srv_req.request.speed << std::endl;
+  } else {
+    ROS_ERROR("Failed to call service add_two_ints");
+    return 1;
+  }
+  std::cout << srv_req.request.speed << std::endl;
 
   laser_assembler::AssembleScans srv;  
   // assemble from "NOW"
