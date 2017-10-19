@@ -1,10 +1,19 @@
 #include <ros/ros.h>
-#include <laser_assembler/AssembleScans.h>
+
 #include <dynamixel_msgs/JointState.h>
 #include <dynamixel_controllers/SetSpeed.h>
+
 #include <sensor_msgs/PointCloud.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <sensor_msgs/point_cloud_conversion.h>
+#include <laser_assembler/AssembleScans.h>
+
+#include <pcl/io/pcd_io.h>
+#include <pcl/point_types.h>
+#include <pcl/conversions.h>
+#include <pcl_conversions/pcl_conversions.h>
+#include <pcl/point_cloud.h>
+
 #include <std_msgs/Float64.h>
 
 int main(int argc, char **argv) {
@@ -39,6 +48,7 @@ int main(int argc, char **argv) {
   // Set the speed of the motor
   ros::service::waitForService("/laser_controller/set_speed");
   ros::ServiceClient speed_client = nh.serviceClient<dynamixel_controllers::SetSpeed>("/laser_controller/set_speed");
+
   dynamixel_controllers::SetSpeed srv_req;
   nh.getParam("/laser_controller/joint_speed", srv_req.request.speed);
  
@@ -78,6 +88,11 @@ int main(int argc, char **argv) {
     } 
     pub_cloud2.publish (pcloud2);
     ros::Duration(0.5).sleep();
+   
+    // ADDED JUST BEFORE VTK STARTED FAILING
+    //pcl::PointCloud<pcl::PointXYZRGB> save_cloud;
+    //pcl_conversions::toPCL(pcloud2, save_cloud);
+    //pcl::io::savePCDFileASCII ("test_pcd.pcd", save_cloud); 
   } 
   else {
     printf("Assembling service call failed\n");

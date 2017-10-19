@@ -8,6 +8,7 @@ This software assembles laser scans or point clouds from a laser that is turned 
 - [Point cloud library](http://pointclouds.org/)
 - [BOOST](http://www.boost.org/)
 - [URG](http://www.hokuyo-aut.jp/) 
+- [SDL library] 
 - Several ROS packages, check package.xml.
 
 Install the depedencies, copy this the software into your catkin workspace and compile it.  
@@ -25,8 +26,8 @@ When using a Velodyne laser, configure the network as provided by the manufactur
 
 Then, you can launch the driver of the motor and the laser drivers by (choose depending on your laser). Besides, rviz is started with a proper config file.
 
-$ roslaunch laser3d controller\_manager\_velodyne.launch      (velodyne)  
-$ roslaunch laser3d controller\_manager\_hokuyo.launch        (hokuyo)
+(velodyne) $ roslaunch laser3d controller\_manager\_velodyne.launch  
+(hokuyo)   $ roslaunch laser3d controller\_manager\_hokuyo.launch  
 
 Then, start the dynamixel motor controller by:
 
@@ -46,15 +47,19 @@ $ roslaunch laser3d pc_converter.launch
 
 Then, the assembler node has to be launched. Depending on the type of information provided by your laser you have to launch laser\_aseembler (hokuyo) or point\_cloud\_aseembler (velodyne).
  
-$ roslaunch laser3d point\_cloud\_assembler.launch       (velodyne)  
-$ roslaunch laser3d laser\_assembler.launch              (hokuyo)
+(velodyne) $ roslaunch laser3d point\_cloud\_assembler.launch  
+(hokuyo)   $ roslaunch laser3d laser\_assembler.launch  
 
 Finally, there is an testing node which commands the motor to move, asks the assembler to merge the information and finally publishes it so that it can be seen in rviz. for calling this node:
 
-$ rosrun laser3d bin\_laser\_pc\_assemble\_req        (velodyne)  
-$ rosrun laser3d bin\_laser\_scan\_assemble\_req      (hokuyo)
+(velodyne) $ rosrun laser3d bin\_laser\_pc\_assemble\_req  
+(hokuyo)   $ rosrun laser3d bin\_laser\_scan\_assemble\_req  
 
 Extra! There is and example launch file to call a pointcloud filter nodelet. In this case, the parameters are set to filter data on the z-axis between -1.0 and 10.5 meters, and downsample the data with a leaf size of 0.01 meters. Call:
 
 $ roslaunch laser3d voxelgrid.launch
+
+Extra 2! If you want to save the data into a point cloud, just call the next node:  
+
+rosrun pcl\_ros pointcloud\_to\_pcd input:=/assembled\_cloud2
 

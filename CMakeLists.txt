@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   dynamixel_msgs
   tf
   sensor_msgs
+  pcl_ros
 )
 
 ## System dependencies are found with CMake's conventions
