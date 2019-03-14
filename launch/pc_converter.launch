@@ -1,0 +1,6 @@
+<launch>
+	<node pkg="laser3d" name="point_cloud_converter" type="bin_point_cloud_converter_node" >
+		<remap from="points2_in" to="velodyne_points"/>
+		<remap from="points_out" to="velodyne_points_converted" />
+	</node>
+</launch>
