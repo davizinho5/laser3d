@@ -149,6 +149,7 @@ add_executable(bin_imu_pub src/imu_tf_pub.cpp)
 add_executable(bin_velodyne_imu src/velodyneToImu.cpp)
 
 add_executable(bin_laser_turn_req src/laser_pc_request_no_assemble.cpp)
+add_executable(bin_pololu_plus_cloud src/pololu_plus_cloud.cpp)
 add_executable(bin_imu_to_laser src/imu_to_laser.cpp)
 add_executable(bin_imu_to_imu2 src/imu_to_imu2.cpp)
 add_executable(bin_laser_matlab src/laser_cloud_matlab.cpp)
@@ -172,6 +173,7 @@ target_link_libraries(bin_point_cloud_converter_node
   ${catkin_LIBRARIES}
 )
 target_link_libraries(bin_imu_pub                    ${catkin_LIBRARIES} )
+target_link_libraries(bin_pololu_plus_cloud                    ${catkin_LIBRARIES} )
 target_link_libraries(bin_laser_turn_req             ${catkin_LIBRARIES} )
 target_link_libraries(bin_velodyne_imu             ${catkin_LIBRARIES} )
 target_link_libraries(bin_imu_to_laser            ${catkin_LIBRARIES} )

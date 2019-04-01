@@ -45,7 +45,7 @@ void cloudCallback(const sensor_msgs::PointCloud2& msg) {
   sensor_msgs::PointCloud2 out;
 
   //tf_listener.lookupTransform (std::string("base_link"), msg.header.frame_id, ros::Time(0), transform);
-  tf_listener.waitForTransform(msg.header.frame_id, "base_link",  ros::Time(0), ros::Duration(5));
+  tf_listener.waitForTransform(msg.header.frame_id, "base_link",  ros::Time(0), ros::Duration(2));
   tf_listener.lookupTransform (msg.header.frame_id, "base_link",  ros::Time(0), transform);
 
 
@@ -70,10 +70,10 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "laser_pc_transformer");
   ros::NodeHandle nh;
 
-  ros::Subscriber sub = nh.subscribe("/assembled_cloud2", 10, &cloudCallback);
+  ros::Subscriber sub = nh.subscribe("/velodyne_points", 10, &cloudCallback);
 
   // Create a ROS publisher for the output point cloud
-  pub = nh.advertise<sensor_msgs::PointCloud2> ("TransformedCloudToBase", 1);
+  pub = nh.advertise<sensor_msgs::PointCloud2> ("/TransformedCloudToBase", 1);
 
   // Spin
   ros::spin ();
