@@ -91,7 +91,7 @@ void stateCallback(const sensor_msgs::Imu & msg) {
 //  cout << "ANGULO 1 " << q_new.getAngle()  << endl;
 //  cout << "ANGULO 2 " << q_new_2.getAngle() << endl;
 
-  tf::Transform transform2( q_new, tf::Vector3(0.0, 0.0, 0.42));
+  tf::Transform transform2( q_new, tf::Vector3(0.0, 0.05, 0.175));
   tf::Transform transform3( q_new_2, tf::Vector3(0.3, 0.0, 0.42)); 
   
   br.sendTransform(tf::StampedTransform(transform2, ros::Time::now(), "base_link", "imu_link"));
