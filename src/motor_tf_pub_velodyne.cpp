@@ -15,6 +15,7 @@ ros::Publisher publish_cloud_time;
 double ang = .0396;
 double total_number_clouds = 70.0;
 int count_clouds = 0;
+double yaw_inicial = 0.0;
 
 double degree2rad(const double & d)
 {
@@ -52,7 +53,7 @@ void stateCallback(const sensor_msgs::Imu & msg) {
 //  Quaternion (const Vector3 &axis, const tfScalar &angle)
   
   tf::Vector3 vector(1.1347284e-04,0.0031,-0.0394702);
-	double angulo = ((position*ang)/180.0);
+	double angulo = ((position*-ang)/180.0);
 
   cout << "ANGULO " << angulo << endl;
 
@@ -67,10 +68,16 @@ void stateCallback(const sensor_msgs::Imu & msg) {
 	double roll, pitch, yaw;
 	m.getRPY(roll, pitch, yaw);
 
+//  if(count_clouds == 0) {
+//   yaw_inicial = yaw;
+//	 count_clouds++;
+//  }
 
-  tf::Quaternion q_orig;//Quaternion (const tfScalar &yaw, const tfScalar &pitch, const tfScalar &roll) __attribute__((deprecated))
-  q_orig.setRPY(roll,pitch,0);
-  tf::Quaternion q_rot = tf::createQuaternionFromRPY(0,0,y); //Rotating -90º
+  tf::Quaternion q_orig,q_orig_2;//Quaternion (const tfScalar &yaw, const tfScalar &pitch, const tfScalar &roll) __attribute__((deprecated))
+  q_orig.setRPY(roll,pitch,yaw);
+  q_orig_2.setRPY(roll,pitch,yaw);
+
+  tf::Quaternion q_rot = tf::createQuaternionFromRPY(0,y,2*y); //Rotating -90º
 
 
   msg_cloud.header.stamp = actual_time;
@@ -78,24 +85,30 @@ void stateCallback(const sensor_msgs::Imu & msg) {
 
 	cout << roll << " " << pitch << " " << yaw << endl;
 
-  tf::Quaternion q_new = q_orig*q_rot*quat_offset; //New orientation FALTA OFFSET
-//  cout << "ANGULO ORIGINAL " << q_orig.getAngle()  << endl;
-//  cout << "ANGULO QUATERNIO " << q_new.getAngle() << endl;
+  tf::Quaternion q_new = q_orig*q_rot*quat_offset;//*q_rot;//*q_rot;//*quat_offset; //New orientation FALTA OFFSET
+  tf::Quaternion q_new_2 = q_imu*q_rot;//*quat_offset;
 
-  tf::Transform transform2( q_new, tf::Vector3(0.0, 0.0, 0.42)); 
-  br.sendTransform(tf::StampedTransform(transform2, actual_time, "base_link", "imu_link"));
+//  cout << "ANGULO 1 " << q_new.getAngle()  << endl;
+//  cout << "ANGULO 2 " << q_new_2.getAngle() << endl;
+
+  tf::Transform transform2( q_new, tf::Vector3(0.0, 0.0, 0.42));
+  tf::Transform transform3( q_new_2, tf::Vector3(0.3, 0.0, 0.42)); 
+  
+  br.sendTransform(tf::StampedTransform(transform2, ros::Time::now(), "base_link", "imu_link"));
+  br.sendTransform(tf::StampedTransform(transform3, ros::Time::now(), "base_link", "imu_link_2"));
 
   tf::Transform transform;
   transform.setOrigin(tf::Vector3(0.0, 0.0, 0.0));
   tf::Quaternion q;
-//	//Actual Ros time for : 1. PointCloud 2. New tf
+
 
 
 	//ESTA ROTACION SE HACIA EN X -- AHORA PARA LAS PRUEBAS (Z)
-	cout << "Publishing transformation tf..." << endl;
-  q.setRPY(degree2rad(-position), 0,0 ); //AQUI ESTABA PUESTO : -position (antes del 01-04-19)
+	cout << "Publishing transformation tf..." << " " << position << endl;
+//  tf::Quaternion q_motor;
+	q.setRPY(degree2rad(-position), 0,0); //AQUI ESTABA PUESTO : -position (antes del 01-04-19)
   transform.setRotation(q);
-  br.sendTransform(tf::StampedTransform(transform, actual_time, "imu_link", "velodyne"));
+  br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "imu_link", "velodyne"));
 
 
 

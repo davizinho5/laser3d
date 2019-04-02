@@ -46,7 +46,7 @@ void imuCallback(const sensor_msgs::Imu& msg) {
 
 //  tf::Quaternion q_rot = tf::createQuaternionFromRPY(0,0,0); //Rotating -90º
   tf::Quaternion q_rot = tf::createQuaternionFromRPY(0,0,y); //Rotating -90º
-  tf::Quaternion q_new = q_orig*q_rot; //New orientatio0r
+  tf::Quaternion q_new = q_orig;//*q_rot; //New orientatio0r
   tf::Transform transform2( q_new, tf::Vector3(0.0, 0.0, 0.42));
   br.sendTransform(tf::StampedTransform(transform2, ros::Time::now(), "base_link", "imu_link"));
 
