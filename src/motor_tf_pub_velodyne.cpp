@@ -93,7 +93,7 @@ void stateCallback(const sensor_msgs::Imu & msg) {
 	//ESTA ROTACION SE HACIA EN X -- AHORA PARA LAS PRUEBAS (Z)
 	cout << "Publishing transformation tf..." << " " << position << endl;
 //  tf::Quaternion q_motor;
-	q.setRPY(degree2rad(position), 0,0); //AQUI ESTABA PUESTO : -position (antes del 01-04-19)
+	q.setRPY(degree2rad(-position), 0,0); //AQUI ESTABA PUESTO : -position (antes del 01-04-19)
   transform.setRotation(q);
   br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "imu_link", "velodyne"));
 

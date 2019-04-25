@@ -19,6 +19,9 @@ using namespace std;
 
 bool end_rotation = false;
 
+
+
+
 void callback2(const std_msgs::Bool & end)
 {
 	end_rotation = end.data;
