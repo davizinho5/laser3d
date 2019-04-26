@@ -12,7 +12,7 @@ using namespace sensor_msgs;
 
 double pi = 3.14159265359;
 ros::Publisher publish_cloud_time;
-double ang = .0442;
+double ang = .0487;
 double total_number_clouds = 70.0;
 int count_clouds = 0;
 
@@ -42,7 +42,7 @@ void stateCallback(const sensor_msgs::Imu & msg) {
 
 //  Quaternion (const Vector3 &axis, const tfScalar &angle)
   
-  tf::Vector3 vector(3.6525639e-04,0.0012996,-0.0441428);
+  tf::Vector3 vector(6.3834304e-04,0.0035198,0.0485951);
 	double angulo = ((position*-ang)/180.0);
 
   cout << "ANGULO " << angulo << endl;
@@ -65,7 +65,7 @@ void stateCallback(const sensor_msgs::Imu & msg) {
   q_orig_2.setRPY(roll,pitch,yaw);
 
   tf::Quaternion q_rot = tf::createQuaternionFromRPY(0,y,2*y); //Rotating -90º
-  tf::Quaternion q_rot_2 = tf::createQuaternionFromRPY(0,0,-0.055); //Rotating -90º
+  tf::Quaternion q_rot_2 = tf::createQuaternionFromRPY(0,0,0); //Rotating -90º
 
 
   msg_cloud.header.stamp = actual_time;

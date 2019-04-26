@@ -4,6 +4,7 @@
 #include <dynamixel_controllers/SetSpeed.h>
 
 #include <sensor_msgs/PointCloud.h>
+#include <sensor_msgs/Imu.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <sensor_msgs/point_cloud_conversion.h>
 #include <laser_assembler/AssembleScans.h>
@@ -13,18 +14,31 @@
 #include <pcl/conversions.h>
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/point_cloud.h>
-using namespace std;
 #include <std_msgs/Bool.h>
 #include <std_msgs/UInt8.h>
 
+using namespace std;
+
 bool end_rotation = false;
+float position = 7.0;
 
+void stateCallback(const sensor_msgs::Imu & msg) {
+ 
+  position = msg.orientation_covariance[0];
 
+}
 
 
 void callback2(const std_msgs::Bool & end)
 {
 	end_rotation = end.data;
+}
+
+int getMovement()
+{
+	if(position >= -5 and position <= 5) return 1; //Initial case
+  if(position >= 175 and position <= 185) return 2;
+  return 3;
 }
 
 
@@ -49,6 +63,7 @@ int main(int argc, char **argv) {
 
 	ros::Subscriber sub = nh.subscribe("/end_rotation", 1000, callback2);
 	ros::Duration(1).sleep();
+  ros::Subscriber sub2 = nh.subscribe("/imu_laser_pub", 1000, stateCallback);
 
  
   std_msgs::UInt8 motor_pos;
@@ -58,8 +73,13 @@ int main(int argc, char **argv) {
   // assemble from "NOW"
   srv.request.begin = ros::Time::now();
   // command the motor to move
-	unsigned int  giro;
-	cout << "Introduzca '1' si desea un giro antihorario , '2' si desea un giro horario: "; cin >> giro; 
+	unsigned int  giro = getMovement();
+  while(giro == 3)
+  { 
+		giro = getMovement();
+    ros::spinOnce();
+  }
+
 	motor_pos.data = giro;
   pub_command.publish(motor_pos);
   ros::Duration(2.0).sleep();
